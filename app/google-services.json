@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "220777377227",
+    "project_id": "aayushcamera",
+    "storage_bucket": "aayushcamera.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:220777377227:android:96aca3346beb0f4edb5a4e",
+        "android_client_info": {
+          "package_name": "com.example.aayushcamera"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "220777377227-6ohn7nmejh3okovimn3aati0qd9759q7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDX8QIfQdxvN9xNqQ6KfZv9Kz-XJUn4tG8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "220777377227-6ohn7nmejh3okovimn3aati0qd9759q7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

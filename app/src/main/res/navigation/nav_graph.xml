@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+
+    app:startDestination="@id/loginPageFragment">
+
+    <fragment
+        tools:layout="@layout/fragment_login_page"
+        android:id="@+id/loginPageFragment"
+        android:name="com.example.aayushcamera.LoginPageFragment"
+        android:label="LoginPageFragment">
+        <action
+            android:id="@+id/action_loginPageFragment_to_landingPageFragment"
+            app:destination="@+id/landingPageFragment"
+/>
+    </fragment>
+
+    <fragment
+        tools:layout="@layout/fragment_landing_page"
+        android:id="@+id/landingPageFragment"
+        android:name="com.example.aayushcamera.LandingPageFragment"
+        android:label="LandingPageFragment" >
+
+        <action
+            android:id="@+id/action_landingPageFragment_to_oneShotFragment"
+            app:destination="@id/oneShotFragment" />
+        <action
+            android:id="@+id/action_landingPageFragment_to_recurringFragment"
+            app:destination="@id/recurringFragment" />
+    </fragment>
+    <fragment
+        tools:layout="@layout/fragment_oneshot"
+        android:id="@+id/oneShotFragment"
+        android:name="com.example.aayushcamera.OneShotFragment"
+        android:label="OneShotFragment" />
+    <fragment
+        tools:layout="@layout/fragment_recurring"
+        android:id="@+id/recurringFragment"
+        android:label="RecurringFragment" />
+
+
+</navigation>
