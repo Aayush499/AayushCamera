@@ -4,7 +4,8 @@ import android.os.Handler
 import android.os.Message
 
 internal class CaptureTimerHandler (private val captureInterval: Long,
-                                    private val captureTimeListener: CaptureTimeListener) : Handler() {
+                                    private val captureTimeListener: CaptureTimeListener
+) : Handler() {
     companion object {
         /** Message code for Capture to uniquely identify our message */
         private const val UPDATE_TIMER_COMMAND = 100

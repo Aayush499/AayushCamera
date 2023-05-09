@@ -26,14 +26,20 @@ internal class HiddenCamLifeCycleOwner : LifecycleOwner {
     private val lifecycleRegistry: LifecycleRegistry = LifecycleRegistry(this)
 
     init {
-        lifecycleRegistry.markState(Lifecycle.State.CREATED)
+//        lifecycleRegistry.markState(Lifecycle.State.CREATED)
+        lifecycleRegistry.currentState = Lifecycle.State.CREATED
     }
 
-    fun start() = lifecycleRegistry.markState(Lifecycle.State.STARTED)
+    fun start(){
+        lifecycleRegistry.currentState = Lifecycle.State.STARTED
+    }
 
-    fun stop() = lifecycleRegistry.markState(Lifecycle.State.CREATED)
+    fun stop(){
+        lifecycleRegistry.currentState = Lifecycle.State.CREATED
+    }
 
-    fun tearDown() = lifecycleRegistry.markState(Lifecycle.State.DESTROYED)
-
+    fun tearDown(){
+        lifecycleRegistry.currentState = Lifecycle.State.DESTROYED
+    }
     override fun getLifecycle(): Lifecycle = lifecycleRegistry
 }

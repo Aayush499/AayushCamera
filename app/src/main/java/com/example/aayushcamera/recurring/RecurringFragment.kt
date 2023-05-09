@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.cottacush.android.hiddencam.recurring
+package com.example.aayushcamera.recurring
 
 import android.os.Bundle
 import android.util.Log
@@ -27,7 +27,11 @@ import com.example.aayushcamera.R
 //import com.example.aayushcamera.CaptureTimeFrequency
 //import com.example.aayushcamera.HiddenCam
 import com.example.aayushcamera.MainActivity
-//import com.example.aayushcamera.OnImageCapturedListener
+import com.example.mylibrary.CaptureTimeFrequency
+import com.example.mylibrary.HiddenCam
+import com.example.mylibrary.OnImageCapturedListener
+//import com.example.aayushcamera.camera.ImageCapture
+import com.example.aayushcamera.databinding.FragmentRecurringBinding
 import java.io.File
 
 class RecurringFragment : Fragment(), OnImageCapturedListener {
@@ -37,15 +41,18 @@ class RecurringFragment : Fragment(), OnImageCapturedListener {
             return activity as? MainActivity ?: throw IllegalStateException("Not attached!")
         }
 
-//    private lateinit var hiddenCam: HiddenCam
+private lateinit var hiddenCam: HiddenCam
     private lateinit var baseStorageFolder: File
+    private lateinit var binding: FragmentRecurringBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.fragment_recurring, container, false)
-
+    ): View? {
+        binding = FragmentRecurringBinding.inflate(inflater, container, false)
+        return binding.root
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mainActivity.setUpToolBar(getString(R.string.recurring))
@@ -53,33 +60,33 @@ class RecurringFragment : Fragment(), OnImageCapturedListener {
             if (exists()) deleteRecursively()
             mkdir()
         }
-//        hiddenCam = HiddenCam(
-//            mainActivity, baseStorageFolder, this,
-//            CaptureTimeFrequency.Recurring(RECURRING_INTERVAL),
-//            targetResolution = Size(1080, 1920)
-//        )
-//        startCaptureButton.setOnClickListener {
-//            hiddenCam.start()
-//        }
-//        stopCaptureButton.setOnClickListener {
-//            hiddenCam.stop()
-//        }
+        hiddenCam = HiddenCam(
+            mainActivity, baseStorageFolder, this,
+            CaptureTimeFrequency.Recurring(RECURRING_INTERVAL),
+            targetResolution = Size(1080, 1920)
+        )
+        binding.startCaptureButton.setOnClickListener {
+            hiddenCam.start()
+        }
+        binding.stopCaptureButton.setOnClickListener {
+            hiddenCam.stop()
+        }
     }
 
-//    override fun onImageCaptured(image: File) {
-//        val message = "Image captured, saved to:${image.absolutePath}"
-//        log(message)
-//        showToast(message)
-//    }
+    override fun onImageCaptured(image: File) {
+        val message = "Image captured, saved to:${image.absolutePath}"
+        log(message)
+        showToast(message)
+    }
 //
-//    override fun onImageCaptureError(e: Throwable?) {
-//        e?.run {
-//            val message = "Image captured failed:${e.message}"
-//            showToast(message)
-//            log(message)
-//            printStackTrace()
-//        }
-//    }
+    override fun onImageCaptureError(e: Throwable?) {
+        e?.run {
+            val message = "Image captured failed:${e.message}"
+            showToast(message)
+            log(message)
+            printStackTrace()
+        }
+    }
 
     private fun showToast(message: String) {
         Toast.makeText(mainActivity, message, Toast.LENGTH_LONG).show()

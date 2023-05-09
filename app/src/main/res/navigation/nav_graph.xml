@@ -38,6 +38,7 @@
     <fragment
         tools:layout="@layout/fragment_recurring"
         android:id="@+id/recurringFragment"
+        android:name="com.example.aayushcamera.recurring.RecurringFragment"
         android:label="RecurringFragment" />
 
 

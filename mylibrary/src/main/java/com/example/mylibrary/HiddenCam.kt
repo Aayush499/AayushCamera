@@ -1,26 +1,14 @@
 package com.example.mylibrary
 
 import android.content.Context
-import android.net.Uri
 import android.util.Size
 import androidx.camera.core.*
-import androidx.camera.core.CameraSelector
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
-import androidx.camera.view.PreviewView
+import androidx.core.content.ContextCompat
 import java.io.File
 import com.example.mylibrary.CaptureTimeFrequency.OneShot
 import com.example.mylibrary.CaptureTimeFrequency.Recurring
-
-import androidx.camera.core.*
-import androidx.camera.core.impl.PreviewConfig
-import com.example.mylibrary.CaptureTimeFrequency
-import androidx.camera.*
-
-
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LifecycleRegistry
 
 class HiddenCam @JvmOverloads constructor(
     context: Context,
@@ -35,26 +23,45 @@ class HiddenCam @JvmOverloads constructor(
     private lateinit var captureTimer: CaptureTimerHandler
     private val lifeCycleOwner = HiddenCamLifeCycleOwner()
 
-
- private var preview : Preview
-
-    private var imageCapture: ImageCapture
+    private lateinit var cameraProvider: ProcessCameraProvider
+ private lateinit var preview : Preview
+    private lateinit var camera: Camera
+    private lateinit var imageCapture: ImageCapture
 
     init {
-        if (context.hasPermissions()) {
-            imageCapture  = ImageCapture.Builder().apply {
-                if (targetRotation != null) setTargetRotation(targetRotation)
-                if (targetResolution != null) setTargetResolution(targetResolution)
-                setTargetAspectRatio(AspectRatio.RATIO_4_3)
-            }.build()
-            preview =  Preview.Builder().apply {
-                if (targetRotation != null) setTargetRotation(targetRotation)
-                setTargetAspectRatio(AspectRatio.RATIO_4_3)
-                if (targetResolution != null) setTargetResolution(targetResolution)
-            }.build()
+        if (true) {
+//            imageCapture  = ImageCapture.Builder().apply {
+//                if (targetRotation != null) setTargetRotation(targetRotation)
+////                if (targetResolution != null) setTargetResolution(targetResolution)
+//                setTargetAspectRatio(AspectRatio.RATIO_4_3)
+//            }.build()
+//            preview =  Preview.Builder().apply {
+//                if (targetRotation != null) setTargetRotation(targetRotation)
+//                setTargetAspectRatio(AspectRatio.RATIO_4_3)
+////                if (targetResolution != null) setTargetResolution(targetResolution)
+//            }.build()
 //      preview.setOnPreviewOutputUpdateListener { }
+            //create a camera provider object
+            val cameraProviderFuture = ProcessCameraProvider.getInstance(context)
+            cameraProviderFuture.addListener({
+                cameraProvider = cameraProviderFuture.get()
+                preview = Preview.Builder().apply {
+                    if (targetRotation != null) setTargetRotation(targetRotation)
+                    setTargetAspectRatio(AspectRatio.RATIO_4_3)
+                }.build()
 
-//            CameraX.bindToLifecycle(lifeCycleOwner, preview, imageCapture)
+                imageCapture = ImageCapture.Builder().apply {
+                    if (targetRotation != null) setTargetRotation(targetRotation)
+                    setTargetAspectRatio(AspectRatio.RATIO_4_3)
+                }.build()
+
+                camera = cameraProvider.bindToLifecycle(
+                    lifeCycleOwner, CameraSelector.DEFAULT_BACK_CAMERA,
+                    preview, imageCapture
+                )
+
+            }, ContextCompat.getMainExecutor(context))
+
             when (val interval = captureFrequency) {
                 OneShot -> {
                     // Nothing for now, we don't need to schedule anything
@@ -68,8 +75,13 @@ class HiddenCam @JvmOverloads constructor(
                             }
                         })
                 }
+                else -> {
+                    throw IllegalArgumentException("Unknown CaptureTimeFrequency: $interval")
+                }
             }
-        } else throw SecurityException("You need to have access to both CAMERA and WRITE_EXTERNAL_STORAGE permissions")
+
+        }
+        else throw SecurityException("You need to have access to both CAMERA and WRITE_EXTERNAL_STORAGE permissions")
     }
 
     /**

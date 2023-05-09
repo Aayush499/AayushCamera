@@ -22,9 +22,7 @@ import android.content.pm.PackageManager
 import android.os.Handler
 import android.os.Looper
 import androidx.camera.core.*
-import androidx.camera.core.impl.utils.Threads
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.LifecycleOwner
 import com.example.mylibrary.TargetAspectRatio.RATIO_16_9
 import com.example.mylibrary.TargetAspectRatio.RATIO_4_3
 import java.io.File
